@@ -15,5 +15,6 @@ BEGIN
 	S <= Rs WHEN "00",
 		  Rou WHEN "01",
 		  Re WHEN "10",
-		  Rxor WHEN "11";
+		  Rxor WHEN "11",
+		  S <= (OTHERS => 'X') WHEN OTHERS;
 END multi;

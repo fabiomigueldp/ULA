@@ -5,7 +5,6 @@ ENTITY ULA IS
 PORT   (
 		A,B : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
 		F : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-		sS, dSd, dSu: OUT STD_LOGIC_VECTOR(0 TO 6);
 		E : OUT STD_LOGIC);
 END ULA;
 
@@ -14,11 +13,6 @@ ARCHITECTURE arquitetura OF ULA IS
 	SIGNAL Re, Rxor, Rou, Rs : STD_LOGIC_VECTOR(4 DOWNTO 0);
 	SIGNAL O1, O0 : STD_LOGIC;
 	SIGNAL S : STD_LOGIC_VECTOR(4 DOWNTO 0);
-	
-	COMPONENT ul
-	PORT	(	A,B		:	IN STD_LOGIC_VECTOR(4 DOWNTO 0);
-			Re, Rxor, Rou		:	OUT STD_LOGIC_VECTOR(4 DOWNTO 0));
-	END COMPONENT;
 	
 	COMPONENT MUX
 	PORT ( Re,Rxor,Rou,Rs: IN STD_LOGIC_VECTOR(4 DOWNTO 0);
@@ -38,18 +32,13 @@ ARCHITECTURE arquitetura OF ULA IS
 			EnA, EnB, InvA, InvB, C0, O1, O0		:	OUT STD_LOGIC);
 	END COMPONENT;
 	
-	COMPONENT DISPLAY
-	PORT (valor			: IN STD_LOGIC_VECTOR(4 DOWNTO 0);
-			sinal			: IN STD_LOGIC;
-			digS, dig1, dig0	: OUT STD_LOGIC_VECTOR(0 TO 6));	
-	END COMPONENT;
-	
 BEGIN 
+	Re <= (OTHERS => 'X');
+	Rxor <= (OTHERS => 'X');
+	Rou <= (OTHERS => 'X');
 
 	UC0 : uc PORT MAP (F, EnA, EnB, InvA, InvB, C0, O1, O0);
 	UA0 : somasub PORT MAP (A, B, EnA, EnB, InvA, InvB, C0, E, Rs);
-	UL0 : ul PORT MAP (A,B, Re, Rxor, Rou);
 	MUX0 : MUX PORT MAP (Re, Rxor, Rou, Rs, O1, O0, S);
-	DSPS : DISPLAY PORT MAP (S, '1', sS, dSd, dSu);
 
 END arquitetura;
